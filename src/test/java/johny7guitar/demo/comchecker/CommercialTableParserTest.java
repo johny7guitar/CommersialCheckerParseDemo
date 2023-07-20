@@ -46,4 +46,20 @@ class CommercialTableParserTest {
 
     }
 
+    @Test
+    void getValueTest(){
+
+        AtomicReference<Element> table = new AtomicReference<>();
+        assertDoesNotThrow(() -> {
+            Document testDocument = Jsoup.parse(this.getClass().getResourceAsStream(MAP_TEST_PAGE), "utf-8", "");
+            table.set(CommercialTableParser.getTable(testDocument));
+        });
+
+        assertEquals("55", CommercialTableParser.getValue(table.get(), "test_property_1"));
+        assertEquals("22", CommercialTableParser.getValue(table.get(), "test_property_2"));
+        assertEquals("58", CommercialTableParser.getValue(table.get(), "test_property_3"));
+        assertEquals("Value not found", CommercialTableParser.getValue(table.get(), "random_property"));
+
+    }
+
 }

@@ -44,6 +44,21 @@ public class CommercialTableParser {
         return result;
     }
 
+    public static String getValue(Element table, String property){
+        if(!new CommercialEntityTableFilter().test(table)) throw new IllegalArgumentException("Invalid input table");
+
+        Elements elements = table.getElementsByTag("tr");
+        List<String> names = rowToValues(elements.get(1));
+        List<String> values = rowToValues(elements.get(2));
+
+        for(int i = 0; i < names.size(); i++){
+            if(names.get(i).equals(property)) return values.get(i);
+        }
+
+        return "Value not found";
+
+    }
+
     private static List<String> rowToValues(Element row){
         return row.getElementsByTag("td")
                 .stream()
