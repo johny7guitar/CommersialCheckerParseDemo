@@ -1,7 +1,7 @@
 package johny7guitar.demo.comchecker;
 
 import org.jsoup.nodes.Document;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.util.Map;
 
@@ -12,10 +12,15 @@ public class Demo {
         try {
             Document doc = DocumentRetriever.getPage();
             Map<String, String> properties = CommercialTableParser.getValuesMap(doc);
-            properties.keySet().forEach(key ->
-                    System.out.printf("\"%s\": \"%s\"%n", key, properties.get(key)));
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            String json = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(properties);
+            System.out.println(json);
+
         }catch(IOException e){
             System.err.println("Can't retrieve document");
+        }catch(Exception e){
+            e.printStackTrace();
         }
 
     }
